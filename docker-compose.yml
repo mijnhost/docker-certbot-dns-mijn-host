@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  certbot_mijnhost:
+    image: your-docker-image:latest
+    volumes:
+      - "~/certbot:/certbot"
+      - "~/certbot/etc/letsencrypt/live:/certbot/etc/letsencrypt/live"
+      - "~/certbot/etc/letsencrypt/.secrets:/certbot/etc/letsencrypt/.secrets"
+    environment:
+      - TZ=Europe/YourTimezone
+      - MIJNHOST_CREDENTIALS=/certbot/etc/letsencrypt/.secrets/mijnhost.ini
+      - MIJNHOST_CRONTAB=0 13 * * *
+      - MIJNHOST_DOMAINS=example.com,*.example.com
+      - MIJNHOST_PROPAGATION=300
+      - MIJNHOST_EMAIL=youremail@example.com
+      # - MIJNHOST_ARGS # optional additional arguments
