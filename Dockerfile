@@ -1,4 +1,6 @@
-ARG CERTBOT_VERSION
+ARG CERTBOT_VERSION=latest
+ARG VERSION=0.0.1
+
 FROM certbot/certbot:${CERTBOT_VERSION}
 
 LABEL org.opencontainers.image.authors="shubhamku044@gmail.com"
@@ -9,9 +11,8 @@ LABEL org.opencontainers.image.version="${VERSION}"
 
 # arch and version envs
 ARG TARGETPLATFORM
-ARG VERSION
 
-ENV DNS_PLUGIN_VERSION=${VERSION}
+ENV DNS_PLUGIN_VERSION=0.0.4
 ENV TARGETPLATFORM=${TARGETPLATFORM}
 
 # user envs
@@ -28,16 +29,14 @@ ENV CERTBOT_LOGS_DIR="${CERTBOT_BASE_DIR}/var/log/letsencrypt"
 ENV CERTBOT_WORK_DIR="${CERTBOT_BASE_DIR}/var/lib/letsencrypt"
 
 # update image, create user and set some permissions
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 RUN apk update --no-cache \
     && apk upgrade --no-cache \
-    && apk add --no-cache doas curl \
+    && apk add --no-cache curl bash \
     && mkdir -p "${CERTBOT_BASE_DIR}" \
-    && addgroup =g "${USER_GID}" -S "${USERNAME}" \
+    && addgroup -g "${USER_GID}" -S "${USERNAME}" \
     && adduser -u "${USER_UID}" -S "${USERNAME}" -G "${USERNAME}" -h "${CERTBOT_BASE_DIR}" \
-    && chown -R "${USERNAME}:${USERNAME}" "${CERTBOT_BASE_DIR}" \
-    && echo "permit nopass keepenv ${USERNAME} as root cmd /certbot_permission.sh" | tee -a "/etc/doas.d/doas.conf" \
-    && doas -C "/etc/doas.d/doas.conf"
+    && chown -R "${USERNAME}:${USERNAME}" "${CERTBOT_BASE_DIR}" 
 
 # install supercronic for cron jobs
 ENV SUPERCRONIC_BASE_URL="https://github.com/aptible/supercronic/releases/download/v0.2.29"
@@ -46,7 +45,7 @@ RUN wget -q "${SUPERCRONIC_BASE_URL}/supercronic-linux-$(echo "${TARGETPLATFORM}
     && echo "done"
 
 # install mijn-host plugin
-RUN pip install --no-cache-dir "certbot-dns-mijn-host==${VERSION}"
+RUN pip install --upgrade pip && pip install --no-cache-dir "certbot-dns-mijn-host==${DNS_PLUGIN_VERSION}"
 
 # copy and configure scripts
 COPY scripts/* /

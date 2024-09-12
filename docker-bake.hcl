@@ -1,13 +1,17 @@
 variable "VERSION" {
-  default = ""
+  default = "0.0.1"
 }
 
 variable "CERTBOT_VERSION" {
-  default = ""
+  default = "latest"
 }
 
 variable "REGISTRY_IMAGE" {
   default = ""
+}
+
+variable "DNS_PLUGIN_VERSION" {
+  default = "0.0.4"
 }
 
 target "default" {

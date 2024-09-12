@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Set permissions
-doas /certbot_permissions.sh
-
 # Configure supercronic schedules
 echo "${MIJNHOST_CRONTAB} /certbot_script.sh" | tee -a "/tmp/crontabs/certbot" >/dev/null
 
