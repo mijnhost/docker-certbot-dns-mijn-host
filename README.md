@@ -1,4 +1,14 @@
-# docker-certbot-dns-mijn-host
+<a href="https://mijn.host" target="_blank">
+    <center>
+        <img src="https://assets.eu.apidog.com/app/apidoc-image/custom/20240626/f1508b02-a360-4b89-b7a9-b939a9180c0e.png"
+        alt="mijn.host"
+        />
+    </center>
+</a>
+
+# [mijn.host](https://mijn.host) Docker DNS Certbot Authenticator Plugin
+
+The [mijn.host](https://mijn.host) DNS Certbot Plugin automates SSL/TLS certificate creation by enabling DNS-01 challenges using the mijn.host API. This plugin is designed to work with the Certbot tool, allowing seamless integration for automated certificate management.
 
 I created a Docker image for certbot-dns-mijn-host plugin from [github.com/mijnhost/certbot-dns-mijn-host](https://github.com/mijnhost/certbot-dns-mijn-host)
 
